@@ -1,4 +1,4 @@
-import { React, View, BackButton } from 'reapp-kit';
+import { React, View, BackButton, Button } from 'reapp-kit';
 import moment from 'moment';
 import Color from 'color';
 
@@ -8,31 +8,52 @@ export default class extends React.Component {
       date: Date.now(),
       baseColor: Color('#C7B2EC')
     })
-    console.log('ran cwm')
   }
-  // getInitialState() {
-  //   return { date: new Date() }
-  // }
 
+  setAlarm(event, time) {
+    console.log('button clicked', event, time)
+    var successCallback = function() {
+      console.log('success callback')
+    }
+    var errorCallback = function() {
+      console.log('error callback')
+    }
+    if (window.wakeuptimer) {
+      window.wakeuptimer.wakeup(
+        successCallback,
+        errorCallback,
+        {
+          alarms : [{
+            type : 'onetime',
+            time : { hour : moment(time).hour(), minute : moment(time).minutes() },
+            extra : { message : 'json containing app-specific information to be posted when alarm triggers' },
+            message : 'Alarm has expired!'
+          }]
+        }
+      );
+    }
+  }
   /*
    * returns array of wake up times
    */
   times(time, color) {
     var result = []
     for (var i=0; i < 6; i++) {
-      var timeOption = moment(time + (90 * 60 * 1000 * (i+1)))
+      var newTime = time + (90 * 60 * 1000 * (i+1))
+      var timeOption = moment(newTime)
       var colorTmp = color.clone()
       colorTmp.darken(0.1*i)
       result.push(
-        <div style={{
+        <Button style={{
           'height': '50px',
-          'backgroundColor': colorTmp.hslString(),
           'color': 'white',
-          'font-weight': 'bold',
+          'fontWeight': 'bold',
           'padding': '10px 0 0 0'
-        }} >
+          }}
+          color={ colorTmp.hslString() }
+          onTap={(event) => this.setAlarm(event, newTime)} >
           { timeOption.format('h:mma') }
-        </div>
+        </Button>
       )
     }
     return result
