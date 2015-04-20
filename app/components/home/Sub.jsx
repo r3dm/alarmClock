@@ -4,7 +4,7 @@ import moment from 'moment';
 export default class extends React.Component {
   componentWillMount() {
     this.setState({
-      date: moment()
+      date: Date.now()
     })
     console.log('ran cwm')
   }
@@ -18,9 +18,9 @@ export default class extends React.Component {
   times(time) {
     var result = []
     for (var i=0; i < 6; i++) {
-      var timeOption = time.add(90, 'minutes')
+      var timeOption = moment(time + (90 * 60 * 1000 * (i+1)))
       result.push(
-        <div>
+        <div style={{ 'height': '50px' }} >
           { timeOption.format('h:mma') }
         </div>
       )
@@ -32,15 +32,18 @@ export default class extends React.Component {
     const backButton =
       <BackButton onTap={() => window.history.back()} />
     var currentDate = this.state.date
+    var currentMoment = moment(currentDate)
     var times = this.times(currentDate)
-    console.log('current time', currentDate.format('h:mma'))
-    var timeString = currentDate.format('h:mma')
+    console.log('current time', currentMoment.format('h:mma'))
+    var timeString = currentMoment.format('h:mma')
 
     return (
       <View {...this.props} title="Times" titleLeft={backButton}>
         <p>The current time is { timeString }.</p>
         <p>You should wake up at ...</p>
-        { times }
+        <div style={{ 'text-align': 'center' }} >
+          { times }
+        </div>
       </View>
     );
   }
