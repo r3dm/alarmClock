@@ -5,7 +5,6 @@ class Home extends React.Component {
     return (
       <NestedViewList {...this.props.viewListProps}>
         <View title="alarmClock">
-          <p>Hello, World!</p>
 
           <Button onTap={() => this.router().transitionTo('sub')}>
             When should I sleep?
