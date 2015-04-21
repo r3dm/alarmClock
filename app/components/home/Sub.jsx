@@ -11,7 +11,9 @@ export default class extends React.Component {
   }
 
   setAlarm(event, time) {
-    console.log('button clicked', event, time)
+    console.log('button clicked', event)
+    var timeDate = new Date(time)
+    console.log(timeDate.getHours())
     var successCallback = function() {
       console.log('success callback')
     }
@@ -33,6 +35,10 @@ export default class extends React.Component {
       );
     }
   }
+  onTap(time, event) {
+    this.setAlarm(event, time)
+  }
+
   /*
    * returns array of wake up times
    */
@@ -51,7 +57,7 @@ export default class extends React.Component {
           'padding': '10px 0 0 0'
           }}
           color={ colorTmp.hslString() }
-          onTap={(event) => this.setAlarm(event, newTime)} >
+          onTap={ this.onTap.bind(this, newTime) } >
           { timeOption.format('h:mma') }
         </Button>
       )
