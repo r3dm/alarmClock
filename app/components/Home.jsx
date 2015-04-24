@@ -9,6 +9,9 @@ class Home extends React.Component {
           <Button onTap={() => this.router().transitionTo('sub')}>
             When should I sleep?
           </Button>
+          <Button onTap={() => this.router().transitionTo('credits')}>
+            Who made this?
+          </Button>
         </View>
 
         {this.props.child()}
